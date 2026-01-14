@@ -2,6 +2,7 @@ name: CTF
 description: Capture The Flag Indexer
 contracts:
   - name: CTF
+    handler: src/EventHandlers.ts
     events:
       - event: WinnersChanged(address indexed newWinner)
       - event: RewardDistributed(address indexed winner, uint256 position, uint256 amount)
