@@ -33,18 +33,17 @@ contract CTF is Ownable {
     }
 
     function game() external {
-        if (!whitelisted[msg.sender]) revert NotWhitelisted();
-
-        if (block.timestamp < END_TIMESTAMP) {
-            for (uint256 i = 4; i > 0; i--) {
-                winners[i] = winners[i - 1];
-            }
-            winners[0] = msg.sender;
-            emit WinnersChanged(msg.sender);
-        } else {
-            // Distribute rewards
+        if (block.timestamp > END_TIMESTAMP) {
             _distributeRewards();
+            return;
         }
+
+        if (!whitelisted[msg.sender]) revert NotWhitelisted();
+        for (uint256 i = 4; i > 0; i--) {
+            winners[i] = winners[i - 1];
+        }
+        winners[0] = msg.sender;
+        emit WinnersChanged(msg.sender);
     }
 
     function _distributeRewards() internal {

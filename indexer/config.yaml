@@ -7,8 +7,8 @@ contracts:
       - event: RewardDistributed(address indexed winner, uint256 position, uint256 amount)
 
 networks:
-  - id: 84532  # Base Sepolia (change to 8453 for Base mainnet)
-    start_block: 0
+  - id: 8453  # Base Sepolia (change to 8453 for Base mainnet)
+    start_block: 40802424
     contracts:
       - name: CTF
-        address: 0x0000000000000000000000000000000000000000  # UPDATE after deployment
+        address: 0x6c8ddc7a8a1945ac3ba1dd8b1e470e5faefefdf8  # UPDATE after deployment

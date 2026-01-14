@@ -102,15 +102,20 @@ contract CTFTest is Test {
         ctf.setWhitelisted(player6, true);
 
         vm.prank(player1);
+        vm.snapshotGasLastCall("player 1");
         ctf.game();
         vm.prank(player2);
+        vm.snapshotGasLastCall("player 2");
         ctf.game();
         vm.prank(player3);
         ctf.game();
+        vm.snapshotGasLastCall("player 3");
         vm.prank(player4);
         ctf.game();
+        vm.snapshotGasLastCall("player 4");
         vm.prank(player5);
         ctf.game();
+        vm.snapshotGasLastCall("player 5");
 
         address[5] memory winners = ctf.getWinners();
         assertEq(winners[0], player5);
@@ -122,6 +127,7 @@ contract CTFTest is Test {
         // Now player6 plays, player1 should be pushed out
         vm.prank(player6);
         ctf.game();
+        vm.snapshotGasLastCall("player 6");
 
         winners = ctf.getWinners();
         assertEq(winners[0], player6);

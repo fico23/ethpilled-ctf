@@ -1,0 +1,16 @@
+# Foundry
+cache/
+out/
+broadcast/
+
+# Environment
+.env
+.env.*
+
+# Dependencies
+node_modules/
+
+# Workshop wallets (contains private keys!)
+workshop-wallets.json
+workshop-wallets.html
+workshop-addresses.txt
