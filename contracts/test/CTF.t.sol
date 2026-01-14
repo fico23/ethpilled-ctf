@@ -36,26 +36,14 @@ contract CTFTest is Test {
 
     function setUp() public {
         token = new MockERC20();
-        token.mint(owner, AMOUNT);
 
         endTimestamp = block.timestamp + 1 days;
 
-        token.approve(address(0), type(uint256).max); // Will be replaced with actual CTF address
-    }
-
-    function _deployCTF() internal {
-        token.approve(address(0), 0); // Reset any previous approval
-
-        // Calculate the address where CTF will be deployed
-        address predictedAddress = vm.computeCreateAddress(address(this), vm.getNonce(address(this)));
-        token.approve(predictedAddress, AMOUNT);
-
         ctf = new CTF(address(token), AMOUNT, endTimestamp);
+        token.mint(address(ctf), AMOUNT);
     }
 
-    function test_constructor() public {
-        _deployCTF();
-
+    function test_constructor() public view {
         assertEq(ctf.owner(), owner);
         assertEq(ctf.TOKEN(), address(token));
         assertEq(ctf.AMOUNT(), AMOUNT);
@@ -64,8 +52,6 @@ contract CTFTest is Test {
     }
 
     function test_setWhitelisted() public {
-        _deployCTF();
-
         assertFalse(ctf.whitelisted(player1));
 
         ctf.setWhitelisted(player1, true);
@@ -76,24 +62,18 @@ contract CTFTest is Test {
     }
 
     function test_setWhitelisted_revertIfNotOwner() public {
-        _deployCTF();
-
         vm.prank(player1);
         vm.expectRevert();
         ctf.setWhitelisted(player1, true);
     }
 
     function test_game_revertIfNotWhitelisted() public {
-        _deployCTF();
-
         vm.prank(player1);
         vm.expectRevert(CTF.NotWhitelisted.selector);
         ctf.game();
     }
 
     function test_game_shiftsWinners() public {
-        _deployCTF();
-
         ctf.setWhitelisted(player1, true);
         ctf.setWhitelisted(player2, true);
 
@@ -114,8 +94,6 @@ contract CTFTest is Test {
     }
 
     function test_game_shiftsAllFiveWinners() public {
-        _deployCTF();
-
         ctf.setWhitelisted(player1, true);
         ctf.setWhitelisted(player2, true);
         ctf.setWhitelisted(player3, true);
@@ -154,8 +132,6 @@ contract CTFTest is Test {
     }
 
     function test_game_distributesRewardsAfterEnd() public {
-        _deployCTF();
-
         ctf.setWhitelisted(player1, true);
         ctf.setWhitelisted(player2, true);
         ctf.setWhitelisted(player3, true);
@@ -188,8 +164,6 @@ contract CTFTest is Test {
     }
 
     function test_game_distributesUnclaimedToOwner() public {
-        _deployCTF();
-
         ctf.setWhitelisted(player1, true);
         ctf.setWhitelisted(player2, true);
 
@@ -217,8 +191,6 @@ contract CTFTest is Test {
     }
 
     function test_game_allUnclaimedGoesToOwner() public {
-        _deployCTF();
-
         ctf.setWhitelisted(player1, true);
 
         uint256 ownerBalanceBefore = token.balanceOf(owner);
@@ -234,8 +206,6 @@ contract CTFTest is Test {
     }
 
     function test_getWinners() public {
-        _deployCTF();
-
         address[5] memory winners = ctf.getWinners();
         for (uint256 i = 0; i < 5; i++) {
             assertEq(winners[i], address(0));
@@ -250,8 +220,6 @@ contract CTFTest is Test {
     }
 
     function test_winnersPublicGetter() public {
-        _deployCTF();
-
         ctf.setWhitelisted(player1, true);
         vm.prank(player1);
         ctf.game();

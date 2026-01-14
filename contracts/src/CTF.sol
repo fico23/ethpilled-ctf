@@ -23,8 +23,6 @@ contract CTF is Ownable {
         TOKEN = token;
         AMOUNT = amount;
         END_TIMESTAMP = endTimestamp;
-
-        SafeTransferLib.safeTransferFrom(token, msg.sender, address(this), amount);
     }
 
     function setWhitelisted(address _address, bool _whitelisted) external onlyOwner {
