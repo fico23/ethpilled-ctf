@@ -1,0 +1,23 @@
+# Root txt files
+/*.txt
+
+# Contracts (Foundry)
+contracts/cache/
+contracts/out/
+contracts/lib/
+contracts/.gitmodules
+
+# Frontend (Node/Vite)
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+
+# Indexer (Envio)
+indexer/node_modules/
+indexer/generated/
+indexer/.env
+
+# General
+.DS_Store
+*.log
