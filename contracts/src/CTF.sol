@@ -10,6 +10,9 @@ contract CTF is Ownable {
     error GameEnded();
     error GameNotEnded();
 
+    event WinnersChanged(address indexed newWinner);
+    event RewardDistributed(address indexed winner, uint256 position, uint256 amount);
+
     mapping(address => bool) public whitelisted;
 
     address public immutable TOKEN;
@@ -37,6 +40,7 @@ contract CTF is Ownable {
                 winners[i] = winners[i - 1];
             }
             winners[0] = msg.sender;
+            emit WinnersChanged(msg.sender);
         } else {
             // Distribute rewards
             _distributeRewards();
@@ -49,11 +53,15 @@ contract CTF is Ownable {
         for (uint256 i; i < 4; ++i) {
             amountLeft /= 2;
             address winner = winners[i];
-            SafeTransferLib.safeTransfer(TOKEN, winner == address(0) ? owner_ : winner, amountLeft);
+            address recipient = winner == address(0) ? owner_ : winner;
+            SafeTransferLib.safeTransfer(TOKEN, recipient, amountLeft);
+            emit RewardDistributed(recipient, i, amountLeft);
 
             if (i == 3) {
                 winner = winners[4];
-                SafeTransferLib.safeTransfer(TOKEN, winner == address(0) ? owner_ : winner, amountLeft);
+                recipient = winner == address(0) ? owner_ : winner;
+                SafeTransferLib.safeTransfer(TOKEN, recipient, amountLeft);
+                emit RewardDistributed(recipient, 4, amountLeft);
             }
         }
     }

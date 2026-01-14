@@ -1,0 +1,14 @@
+name: CTF
+description: Capture The Flag Indexer
+contracts:
+  - name: CTF
+    events:
+      - event: WinnersChanged(address indexed newWinner)
+      - event: RewardDistributed(address indexed winner, uint256 position, uint256 amount)
+
+networks:
+  - id: 84532  # Base Sepolia (change to 8453 for Base mainnet)
+    start_block: 0
+    contracts:
+      - name: CTF
+        address: 0x0000000000000000000000000000000000000000  # UPDATE after deployment
