@@ -1,15 +1,15 @@
-name: CTF
-description: Capture The Flag Indexer
-contracts:
+# yaml-language-server: $schema=./node_modules/envio/evm.schema.json
+name: envio-indexer
+networks:
+- id: 8453
+  start_block: 40802424
+  contracts:
   - name: CTF
+    address:
+    - 0x6C8ddC7a8A1945ac3BA1Dd8B1e470E5FAefEfDf8
     handler: src/EventHandlers.ts
     events:
-      - event: WinnersChanged(address indexed newWinner)
-      - event: RewardDistributed(address indexed winner, uint256 position, uint256 amount)
-
-networks:
-  - id: 8453
-    start_block: 40802424
-    contracts:
-      - name: CTF
-        address: 0x6c8ddc7a8a1945ac3ba1dd8b1e470e5faefefdf8
+    - event: RewardDistributed(address indexed winner, uint256 position, uint256 amount)
+    - event: WinnersChanged(address indexed newWinner)
+unordered_multichain_mode: true
+preload_handlers: true

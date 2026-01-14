@@ -1,30 +1,28 @@
-# Current state of the top 5 winners
-type CurrentWinners @entity {
-  id: ID!  # singleton "current"
-  winner0: String!  # most recent (highest reward)
-  winner1: String!
-  winner2: String!
-  winner3: String!
-  winner4: String!  # oldest (lowest reward)
-  updatedAt: BigInt!
+type CTF_OwnershipHandoverCanceled {
+  id: ID!
+  pendingOwner: String!
 }
 
-# History of all winner changes
-type WinnerChange @entity {
+type CTF_OwnershipHandoverRequested {
   id: ID!
-  newWinner: String! @index
-  blockNumber: BigInt!
-  timestamp: BigInt!
-  transactionHash: String!
+  pendingOwner: String!
 }
 
-# History of all reward distributions
-type RewardDistribution @entity {
+type CTF_OwnershipTransferred {
   id: ID!
-  winner: String! @index
-  position: Int!
+  oldOwner: String!
+  newOwner: String!
+}
+
+type CTF_RewardDistributed {
+  id: ID!
+  winner: String!
+  position: BigInt!
   amount: BigInt!
-  blockNumber: BigInt!
-  timestamp: BigInt!
-  transactionHash: String!
 }
+
+type CTF_WinnersChanged {
+  id: ID!
+  newWinner: String!
+}
+
