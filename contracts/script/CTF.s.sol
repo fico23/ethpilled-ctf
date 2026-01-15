@@ -8,8 +8,8 @@ import {SafeTransferLib} from "solady/utils/SafeTransferLib.sol";
 contract DeployCTF is Script {
     function run() external returns (CTF ctf) {
         address token = 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913; // ERC20 token address
-        uint256 amount = 10e6; // Total prize amount
-        uint256 endTimestamp = block.timestamp + 1 hours; // Game end timestamp
+        uint256 amount = 100e6; // Total prize amount
+        uint256 endTimestamp = 1768755600; // Game end timestamp
 
         vm.startBroadcast();
 

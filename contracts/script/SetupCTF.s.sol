@@ -7,12 +7,11 @@ import {SafeTransferLib} from "solady/utils/SafeTransferLib.sol";
 
 contract SetupCTF is Script {
     address constant TOKEN = 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913; // USDC on Base
-    uint256 constant PRIZE_AMOUNT = 0.1e6; // 10 USDC
-    uint256 constant GAME_DURATION = 24 hours;
+    uint256 constant PRIZE_AMOUNT = 100e6; // 10 USDC
 
     function run() external {
         address[] memory wallets = getWallets();
-        uint256 endTimestamp = block.timestamp + GAME_DURATION;
+        uint256 endTimestamp = 1768755600;
 
         console.log("=== Setup CTF ===");
         console.log("Token:", TOKEN);
