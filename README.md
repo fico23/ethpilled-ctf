@@ -11,6 +11,8 @@
 ## Links
 - [frontend](https://ethpilled-ctf.vercel.app/)
 - [indexer](https://indexer.dev.hyperindex.xyz/9c373b7/v1/graphql)
+- [rpcs](https://chainlist.org/chain/8453)
+- [basescan](https://basescan.org/)
 
 ## Resources
 - [foundry](https://getfoundry.sh/)
