@@ -24,5 +24,7 @@ type CTF_RewardDistributed {
 type CTF_WinnersChanged {
   id: ID!
   newWinner: String!
+  timestamp: BigInt!
+  blockNumber: BigInt!
 }
 

@@ -22,6 +22,8 @@ CTF.WinnersChanged.handler(async ({ event, context }) => {
   const entity: CTF_WinnersChanged = {
     id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
     newWinner: event.params.newWinner,
+    timestamp: BigInt(event.block.timestamp),
+    blockNumber: BigInt(event.block.number),
   };
 
   context.CTF_WinnersChanged.set(entity);

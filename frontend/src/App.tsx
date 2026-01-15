@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { config } from "./wagmi";
 import { WinnersList } from "./components/WinnersList";
 import { GameButton } from "./components/GameButton";
+import { WinnerHistory } from "./components/WinnerHistory";
 import { useEndTimestamp } from "./hooks/useWinners";
 import "./App.css";
 
@@ -173,6 +174,9 @@ function AppContent() {
             </div>
           </div>
         </motion.div>
+
+        {/* Winner History / Live Feed */}
+        <WinnerHistory />
       </main>
 
       {/* Footer */}
