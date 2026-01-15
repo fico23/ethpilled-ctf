@@ -1,4 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useBlockNumber } from "wagmi";
 import { useEffect, useRef, useState } from "react";
 import { INDEXER_URL } from "../contracts/ctf";
 
@@ -16,7 +17,10 @@ interface IndexerResponse {
 }
 
 export function useWinnerHistory() {
-  return useQuery({
+  const queryClient = useQueryClient();
+  const { data: blockNumber } = useBlockNumber({ watch: true });
+
+  const result = useQuery({
     queryKey: ["winnerHistory"],
     queryFn: async (): Promise<WinnerHistoryEvent[]> => {
       const response = await fetch(INDEXER_URL, {
@@ -39,8 +43,16 @@ export function useWinnerHistory() {
       const json: IndexerResponse = await response.json();
       return json.data?.CTF_WinnersChanged || [];
     },
-    refetchInterval: 2000, // Poll every 2 seconds
   });
+
+  // Refetch on new blocks
+  useEffect(() => {
+    if (blockNumber) {
+      queryClient.invalidateQueries({ queryKey: ["winnerHistory"] });
+    }
+  }, [blockNumber, queryClient]);
+
+  return result;
 }
 
 // Hook to detect new winners and trigger effects

@@ -1,6 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useWinners, useTotalAmount, calculateRewards, formatAddress } from "../hooks/useWinners";
-import { formatEther } from "viem";
+import { useWinners, useTotalAmount, calculateRewards, formatAddress, formatUSDC } from "../hooks/useWinners";
 import { useEffect, useRef, useState } from "react";
 import Confetti from "./Confetti";
 
@@ -94,9 +93,9 @@ export function WinnersList() {
                   {rewards[index] ? (
                     <>
                       <span className="reward-amount">
-                        {parseFloat(formatEther(rewards[index])).toLocaleString()}
+                        {formatUSDC(rewards[index])}
                       </span>
-                      <span className="reward-label">tokens</span>
+                      <span className="reward-label">USDC</span>
                     </>
                   ) : (
                     "—"

@@ -12,6 +12,15 @@ import "./App.css";
 
 const queryClient = new QueryClient();
 
+function formatDateTime(date: Date): string {
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear();
+  const hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  return `${day}.${month}.${year}. ${hours}:${minutes}`;
+}
+
 function GameStatus() {
   const { data: endTimestamp } = useEndTimestamp();
 
@@ -29,7 +38,7 @@ function GameStatus() {
     >
       <span className="status-dot" />
       <span className="status-text">
-        {isEnded ? "Game Ended" : `Ends ${endDate.toLocaleDateString()}`}
+        {isEnded ? "Game Ended" : `Ends ${formatDateTime(endDate)}`}
       </span>
     </motion.div>
   );

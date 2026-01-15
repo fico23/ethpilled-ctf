@@ -1,7 +1,6 @@
 import { useReadContract, useBlockNumber } from "wagmi";
-import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
-import { CTF_ADDRESS, CTF_ABI, INDEXER_URL } from "../contracts/ctf";
+import { CTF_ADDRESS, CTF_ABI } from "../contracts/ctf";
 
 // Fetch winners directly from contract
 export function useWinners() {
@@ -41,7 +40,11 @@ export function useTotalAmount() {
   });
 }
 
+// USDC has 6 decimals
+const USDC_DECIMALS = 6;
+
 // Calculate rewards for each position (same logic as contract)
+// Position 0: 50%, Position 1: 25%, Position 2: 12.5%, Position 3: 6.25%, Position 4: 6.25%
 export function calculateRewards(totalAmount: bigint): bigint[] {
   const rewards: bigint[] = [];
   let amountLeft = totalAmount;
@@ -57,51 +60,24 @@ export function calculateRewards(totalAmount: bigint): bigint[] {
   return rewards;
 }
 
+// Format USDC amount (6 decimals)
+export function formatUSDC(amount: bigint): string {
+  const divisor = BigInt(10 ** USDC_DECIMALS);
+  const integerPart = amount / divisor;
+  const fractionalPart = amount % divisor;
+
+  // Format with 2 decimal places for display
+  const fractionalStr = fractionalPart.toString().padStart(USDC_DECIMALS, '0').slice(0, 2);
+
+  return `${integerPart.toLocaleString()}.${fractionalStr}`;
+}
+
 // Format address for display
 export function formatAddress(address: string): string {
   if (address === "0x0000000000000000000000000000000000000000") {
     return "Empty Slot";
   }
   return `${address.slice(0, 6)}...${address.slice(-4)}`;
-}
-
-// Indexer types
-interface WinnersChangedEvent {
-  id: string;
-  newWinner: string;
-}
-
-interface IndexerResponse {
-  data: {
-    CTF_WinnersChanged: WinnersChangedEvent[];
-  };
-}
-
-// Poll indexer for changes (to detect updates)
-export function useIndexerChanges() {
-  return useQuery({
-    queryKey: ["indexerChanges"],
-    queryFn: async (): Promise<WinnersChangedEvent[]> => {
-      const response = await fetch(INDEXER_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          query: `
-            query {
-              CTF_WinnersChanged(order_by: {id: desc}, limit: 10) {
-                id
-                newWinner
-              }
-            }
-          `,
-        }),
-      });
-
-      const json: IndexerResponse = await response.json();
-      return json.data?.CTF_WinnersChanged || [];
-    },
-    refetchInterval: 3000, // Poll every 3 seconds
-  });
 }
 
 // Hook to detect when winners list has changed
