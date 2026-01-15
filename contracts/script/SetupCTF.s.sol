@@ -5,26 +5,20 @@ import {Script, console} from "forge-std/Script.sol";
 import {CTF} from "../src/CTF.sol";
 import {SafeTransferLib} from "solady/utils/SafeTransferLib.sol";
 
-contract E2E is Script {
-    // Config
+contract SetupCTF is Script {
     address constant TOKEN = 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913; // USDC on Base
-    uint256 constant PRIZE_AMOUNT = 10e6; // 10 USDC
-    uint256 constant GAME_DURATION = 1 hours;
-
-    // 0.0001 ETH per wallet = ~44 txs at 75k gas @ 0.03 gwei
-    uint256 constant AMOUNT_PER_WALLET = 0.00001 ether;
+    uint256 constant PRIZE_AMOUNT = 100e6; // 10 USDC
+    uint256 constant GAME_DURATION = 24 hours;
 
     function run() external {
         address[] memory wallets = getWallets();
         uint256 endTimestamp = block.timestamp + GAME_DURATION;
 
-        console.log("=== E2E Workshop Setup ===");
+        console.log("=== Setup CTF ===");
         console.log("Token:", TOKEN);
         console.log("Prize:", PRIZE_AMOUNT);
         console.log("Game ends:", endTimestamp);
-        console.log("Wallets:", wallets.length);
-        console.log("ETH per wallet:", AMOUNT_PER_WALLET);
-        console.log("Total ETH needed:", wallets.length * AMOUNT_PER_WALLET);
+        console.log("Wallets to whitelist:", wallets.length);
 
         vm.startBroadcast();
 
@@ -36,13 +30,9 @@ contract E2E is Script {
         SafeTransferLib.safeTransfer(TOKEN, address(ctf), PRIZE_AMOUNT);
         console.log("Prize funded");
 
+        // 3. Whitelist wallets
         ctf.batchAddWhitelisted(wallets);
-
-        // 3. Fund wallets
-        for (uint256 i = 0; i < wallets.length; i++) {
-            SafeTransferLib.safeTransferETH(wallets[i], AMOUNT_PER_WALLET);
-        }
-        console.log("Wallets funded and whitelisted");
+        console.log("Wallets whitelisted");
 
         vm.stopBroadcast();
 
@@ -52,7 +42,6 @@ contract E2E is Script {
     function getWallets() internal view returns (address[] memory) {
         string memory path = vm.envString("WALLETS_FILE");
         string memory json = vm.readFile(path);
-        address[] memory wallets = abi.decode(vm.parseJson(json, ".wallets"), (address[]));
-        return wallets;
+        return abi.decode(vm.parseJson(json, ".wallets"), (address[]));
     }
 }

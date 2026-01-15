@@ -32,6 +32,13 @@ contract CTF is Ownable {
         whitelisted[_address] = _whitelisted;
     }
 
+    function batchAddWhitelisted(address[] calldata addresses) external onlyOwner {
+        uint256 length = addresses.length;
+        for (uint256 i; i < length; ++i) {
+            whitelisted[addresses[i]] = true;
+        }
+    }
+
     function game() external {
         if (block.timestamp > END_TIMESTAMP) {
             _distributeRewards();
