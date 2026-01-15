@@ -1,4 +1,4 @@
-export const CTF_ADDRESS = "0xa1fd5bF969ADa2b7F86Da87198ef2A275eFdca70" as const;
+export const CTF_ADDRESS = "0x9d6c330dF06C3fe305135c7DA66A8B5e552CDD49" as const;
 
 export const CTF_ABI = [
   {

@@ -2,11 +2,11 @@
 name: envio-indexer
 networks:
 - id: 8453
-  start_block: 40848600
+  start_block: 40854276
   contracts:
   - name: CTF
     address:
-    - 0xa1fd5bF969ADa2b7F86Da87198ef2A275eFdca70
+    - 0x9d6c330dF06C3fe305135c7DA66A8B5e552CDD49
     handler: src/EventHandlers.ts
     events:
     - event: RewardDistributed(address indexed winner, uint256 position, uint256 amount)
