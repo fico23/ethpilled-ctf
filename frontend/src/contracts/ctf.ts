@@ -54,4 +54,4 @@ export const CTF_ABI = [
   },
 ] as const;
 
-export const INDEXER_URL = "https://indexer.dev.hyperindex.xyz/6db0b95/v1/graphql";
+export const INDEXER_URL = "https://indexer.dev.hyperindex.xyz/7dace58/v1/graphql";
